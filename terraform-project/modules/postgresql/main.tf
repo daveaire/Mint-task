@@ -1,14 +1,9 @@
-variable "namespace" {}
-variable "chart_repository" {}
-variable "username" {}
-variable "database" {}
-variable "postgres_password" {}
-
 resource "helm_release" "postgresql" {
   name       = "postgresql"
+  namespace  = var.namespace
   repository = var.chart_repository
   chart      = "postgresql"
-  namespace  = var.namespace
+  version    = var.chart_version
 
   set {
     name  = "auth.postgresPassword"

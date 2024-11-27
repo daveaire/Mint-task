@@ -1,15 +1,15 @@
 variable "namespace" {
-  description = "Namespace for the SonarQube release"
+  description = "Namespace for the SonarQube deployment"
   type        = string
 }
 
 variable "postgresql_enabled" {
-  description = "Enable embedded PostgreSQL for SonarQube"
+  description = "Flag to enable or disable embedded PostgreSQL"
   type        = bool
 }
 
 variable "postgresql_server" {
-  description = "PostgreSQL server address"
+  description = "PostgreSQL server FQDN"
   type        = string
 }
 
@@ -21,7 +21,6 @@ variable "postgresql_username" {
 variable "postgresql_password" {
   description = "PostgreSQL password for SonarQube"
   type        = string
-  sensitive   = true
 }
 
 variable "postgresql_database" {

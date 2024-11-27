@@ -1,18 +1,12 @@
-variable "namespace" {}
-variable "postgresql_enabled" {}
-variable "postgresql_server" {}
-variable "postgresql_username" {}
-variable "postgresql_password" {}
-variable "postgresql_database" {}
-
 resource "helm_release" "sonarqube" {
-  name      = "sonarqube"
-  chart     = "oteemocharts/sonarqube"
-  namespace = var.namespace
+  name       = "sonarqube"
+  namespace  = var.namespace
+  repository = "oteemocharts/sonarqube"
+  chart      = "sonarqube"
 
   set {
     name  = "postgresql.enabled"
-    value = var.postgresql_enabled
+    value = "false"
   }
 
   set {

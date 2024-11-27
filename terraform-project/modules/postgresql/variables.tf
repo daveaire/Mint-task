@@ -1,10 +1,15 @@
 variable "namespace" {
-  description = "Namespace for the PostgreSQL release"
+  description = "Namespace for the PostgreSQL deployment"
   type        = string
 }
 
 variable "chart_repository" {
-  description = "Repository for the PostgreSQL Helm chart"
+  description = "Helm chart repository for PostgreSQL"
+  type        = string
+}
+
+variable "chart_version" {
+  description = "Helm chart version for PostgreSQL"
   type        = string
 }
 
@@ -19,7 +24,6 @@ variable "database" {
 }
 
 variable "postgres_password" {
-  description = "PostgreSQL password"
+  description = "Secure password for PostgreSQL"
   type        = string
-  sensitive   = true
 }
