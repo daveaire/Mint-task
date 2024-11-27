@@ -213,4 +213,4 @@ Deploys SonarQube using the Oteemo Helm chart and connects it to PostgreSQL.
 
 ---
 
-This README provides a comprehensive overview of the project, ensuring clarity and ease of use for all levels of Terraform users.
+

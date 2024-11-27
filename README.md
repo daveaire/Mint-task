@@ -1,7 +1,7 @@
 
 # Automation Script for Setting Up Minikube, Helm, Terraform, and Deploying SonarQube
 
-This script automates the setup of a Minikube cluster, installs necessary dependencies, and deploys SonarQube with PostgreSQL using Terraform and Kubernetes.
+This script automates the setup of a Minikube cluster and deploys SonarQube with PostgreSQL using Terraform and Kubernetes.
 
 ---
 
@@ -10,8 +10,8 @@ This script automates the setup of a Minikube cluster, installs necessary depend
 
 1. **Minikube Configuration**:
    - Configures Minikube with:
-     - 2 CPUs
-     - 4GB memory
+     - 4 CPUs
+     - 7949GB memory
      - Docker driver
    - Starts Minikube and enables the ingress addon.
 
@@ -60,26 +60,6 @@ Before running the script, ensure the following dependencies are installed:
 ---
 
 
-## Usage Instructions
-
-1. **Clone the Repository**:
-   ```bash
-   git clone <repository-url>
-   cd <repository-folder>
-   ```
-
-2. **Make the Script Executable**:
-   ```bash
-   chmod +x setup.sh
-   ```
-
-3. **Run the Script**:
-   ```bash
-   ./setup.sh
-   ```
-
----
-
 ## Important Notes
 
 - **Add User to Docker Group**:
@@ -102,10 +82,10 @@ Before running the script, ensure the following dependencies are installed:
 
 ### Step 1: Download the Script
 
-Save the script locally or download it:
 ```bash
-wget <script-download-link> -O setup.sh
-```
+   git clone <repository-url>
+   cd <repository-folder>
+   ```
 
 ### Step 2: Make the Script Executable
 ```bash
@@ -115,7 +95,7 @@ chmod +x setup.sh
 ### Step 3: Run the Script
 Run the script with root privileges:
 ```bash
-sudo ./setup.sh
+ ./setup.sh
 ```
 
 ---
@@ -123,7 +103,7 @@ sudo ./setup.sh
 ## Script Workflow
 
 1. **Configure and Start Minikube**:
-   - Allocates 2 CPUs and 4GB memory for Minikube.
+   - Allocates 4 CPUs and 7949B memory for Minikube.
    - Sets Docker as the driver.
    - Enables the Minikube ingress addon.
 
@@ -164,7 +144,7 @@ Automation script completed successfully!
 
 ## Notes
 
-- **Resource Allocation**: Ensure your system has sufficient resources to allocate 2 CPUs and 4GB of memory to Minikube.
+- **Resource Allocation**: Ensure your system has sufficient resources to allocate 4 CPUs and GB of memory to Minikube.
 - **Minikube Driver**: The script uses Docker as the Minikube driver. Ensure Docker is installed and running.
 - **Terraform Files**: The `terraform-project` folder must contain valid Terraform configurations for PostgreSQL and SonarQube.
 
