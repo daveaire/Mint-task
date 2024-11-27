@@ -7,33 +7,94 @@ This script automates the setup of a Minikube cluster, installs necessary depend
 
 ## Features
 
-1. **Automated Dependency Installation**:
-   - Installs Docker, Minikube, Helm, kubectl, and Terraform.
 
-2. **Minikube Configuration**:
+1. **Minikube Configuration**:
    - Configures Minikube with:
      - 2 CPUs
      - 4GB memory
      - Docker driver
    - Starts Minikube and enables the ingress addon.
 
-3. **Helm Repository Setup**:
+2. **Helm Repository Setup**:
    - Adds the Oteemo Helm chart repository for SonarQube.
 
-4. **Terraform Deployment**:
+3. **Terraform Deployment**:
    - Deploys PostgreSQL and SonarQube.
 
-5. **Ingress Configuration and Verification**:
+4. **Ingress Configuration and Verification**:
    - Applies an `ingress.yaml` file to expose SonarQube.
    - Verifies application accessibility via `curl`.
 
 ---
 
+This script automates the setup of Minikube and deployment of applications using Terraform. It assumes all dependencies are pre-installed.
+
+---
+
 ## Prerequisites
+
+Before running the script, ensure the following dependencies are installed:
+
+1. **Docker**:
+   - [Install Docker](https://docs.docker.com/engine/install/)
+
+2. **Minikube**:
+   - [Install Minikube](https://minikube.sigs.k8s.io/docs/start/)
+
+3. **kubectl**:
+   - [Install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+
+4. **Helm**:
+   - [Install Helm](https://helm.sh/docs/intro/install/)
+
+5. **Terraform**:
+   - [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+
+
 
 - **Operating System**: Debian-based Linux.
 - **Terraform Project Folder**: A folder named `terraform-project` containing Terraform files.
 - **Ingress YAML**: An `ingress.yaml` file for SonarQube.
+# Automation Script for Minikube and Terraform Deployment
+
+---
+
+
+## Usage Instructions
+
+1. **Clone the Repository**:
+   ```bash
+   git clone <repository-url>
+   cd <repository-folder>
+   ```
+
+2. **Make the Script Executable**:
+   ```bash
+   chmod +x setup.sh
+   ```
+
+3. **Run the Script**:
+   ```bash
+   ./setup.sh
+   ```
+
+---
+
+## Important Notes
+
+- **Add User to Docker Group**:
+   After installing Docker, ensure your user is added to the `docker` group:
+   ```bash
+   sudo usermod -aG docker $USER
+   ```
+   You must log out and log back in or run:
+   ```bash
+   newgrp docker
+   ```
+   to apply the changes.
+
+- **Minikube Requires Docker**:
+   Ensure Docker is running before starting Minikube.
 
 ---
 
@@ -61,24 +122,21 @@ sudo ./setup.sh
 
 ## Script Workflow
 
-1. **Install Dependencies**:
-   - Updates the system and installs Docker, Minikube, Helm, kubectl, and Terraform.
-
-2. **Configure and Start Minikube**:
+1. **Configure and Start Minikube**:
    - Allocates 2 CPUs and 4GB memory for Minikube.
    - Sets Docker as the driver.
    - Enables the Minikube ingress addon.
 
-3. **Add Helm Repository**:
+2. **Add Helm Repository**:
    - Adds the Oteemo Helm chart repository.
 
-4. **Terraform Deployment**:
+3. **Terraform Deployment**:
    - Initializes and applies the Terraform configuration in the `terraform-project` folder.
 
-5. **Ingress Configuration**:
+4. **Ingress Configuration**:
    - Applies the `ingress.yaml` file to expose SonarQube.
 
-6. **Verify Application**:
+5. **Verify Application**:
    - Retrieves the Minikube IP.
    - Verifies SonarQube is accessible via HTTP using `curl`.
 
@@ -88,12 +146,6 @@ sudo ./setup.sh
 
 ```bash
 Starting the automation script...
-Updating system and installing prerequisites...
-Installing Docker...
-Installing Minikube...
-Installing kubectl...
-Installing Helm 3...
-Installing Terraform...
 Configuring Minikube...
 Starting Minikube...
 Enabling ingress addon...
