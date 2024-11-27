@@ -7,11 +7,10 @@ This script automates the setup of a Minikube cluster and deploys SonarQube with
 
 ## Features
 
-
 1. **Minikube Configuration**:
    - Configures Minikube with:
      - 4 CPUs
-     - 7949GB memory
+     - 8GB memory
      - Docker driver
    - Starts Minikube and enables the ingress addon.
 
@@ -24,10 +23,6 @@ This script automates the setup of a Minikube cluster and deploys SonarQube with
 4. **Ingress Configuration and Verification**:
    - Applies an `ingress.yaml` file to expose SonarQube.
    - Verifies application accessibility via `curl`.
-
----
-
-This script automates the setup of Minikube and deployment of applications using Terraform. It assumes all dependencies are pre-installed.
 
 ---
 
@@ -50,52 +45,49 @@ Before running the script, ensure the following dependencies are installed:
 5. **Terraform**:
    - [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 
-
-
-- **Operating System**: Debian-based Linux.
-- **Terraform Project Folder**: A folder named `terraform-project` containing Terraform files.
-- **Ingress YAML**: An `ingress.yaml` file for SonarQube.
-# Automation Script for Minikube and Terraform Deployment
+6. **Run `environments.sh` (if environment is not set up)**:
+   If your environment does not have the above dependencies installed, run the `environments.sh` script:
+   ```bash
+   chmod +x environments.sh
+   ./environments.sh
+   ```
 
 ---
 
+## System Requirements
 
-## Important Notes
+Ensure your system meets the following requirements:
 
-- **Add User to Docker Group**:
-   After installing Docker, ensure your user is added to the `docker` group:
-   ```bash
-   sudo usermod -aG docker $USER
-   ```
-   You must log out and log back in or run:
-   ```bash
-   newgrp docker
-   ```
-   to apply the changes.
-
-- **Minikube Requires Docker**:
-   Ensure Docker is running before starting Minikube.
+- **Operating System**: Debian-based Linux
+- **RAM**: 8GB or more
+- **Disk Space**: At least 20GB of free disk space
+- **CPU**: 4 cores minimum
+- **Internet**: Active internet connection for downloading dependencies and charts
 
 ---
 
 ## Usage
 
-### Step 1: Download the Script
-
+### Step 1: Clone the Repository
 ```bash
-   git clone <repository-url>
-   cd <repository-folder>
-   ```
+git clone <repository-url>
+cd <repository-folder>
+```
 
-### Step 2: Make the Script Executable
+### Step 2: Run the Environment Setup (if needed)
+```bash
+chmod +x environments.sh
+./environments.sh
+```
+
+### Step 3: Make the Script Executable
 ```bash
 chmod +x setup.sh
 ```
 
-### Step 3: Run the Script
-Run the script with root privileges:
+### Step 4: Run the Script
 ```bash
- ./setup.sh
+./setup.sh
 ```
 
 ---
@@ -103,7 +95,7 @@ Run the script with root privileges:
 ## Script Workflow
 
 1. **Configure and Start Minikube**:
-   - Allocates 4 CPUs and 7949B memory for Minikube.
+   - Allocates 4 CPUs and 8GB memory for Minikube.
    - Sets Docker as the driver.
    - Enables the Minikube ingress addon.
 
@@ -144,7 +136,7 @@ Automation script completed successfully!
 
 ## Notes
 
-- **Resource Allocation**: Ensure your system has sufficient resources to allocate 4 CPUs and GB of memory to Minikube.
+- **Resource Allocation**: Ensure your system has sufficient resources to allocate 4 CPUs, 8GB RAM, and 20GB disk space to Minikube.
 - **Minikube Driver**: The script uses Docker as the Minikube driver. Ensure Docker is installed and running.
 - **Terraform Files**: The `terraform-project` folder must contain valid Terraform configurations for PostgreSQL and SonarQube.
 
@@ -152,7 +144,7 @@ Automation script completed successfully!
 
 ## Troubleshooting
 
-1. **Minikube Not Starting**:
+1. **Minikube Issues**:
    - Verify Docker is running.
    - Check virtualization settings on your machine.
 
@@ -181,4 +173,3 @@ Automation script completed successfully!
 ## License
 
 This script is provided as-is, without warranty. Use it at your own risk.
-
