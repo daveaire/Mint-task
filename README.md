@@ -45,11 +45,11 @@ Before running the script, ensure the following dependencies are installed:
 5. **Terraform**:
    - [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 
-6. **Run `environments.sh` (if environment is not set up)**:
-   If your environment does not have the above dependencies installed, run the `environments.sh` script:
+6. **Run `environment.sh` (if environment is not set up)**:
+   If your environment does not have the above dependencies installed, run the `environment.sh` script:
    ```bash
-   chmod +x environments.sh
-   ./environments.sh
+   chmod +x environment.sh
+   sudo ./environment.sh
    ```
 
 ---
@@ -76,8 +76,8 @@ cd <repository-folder>
 
 ### Step 2: Run the Environment Setup (if needed)
 ```bash
-chmod +x environments.sh
-./environments.sh
+chmod +x environment.sh
+sudo ./environment.sh
 ```
 
 ### Step 3: Make the Script Executable
