@@ -5,17 +5,16 @@ This project provides a modular and secure Terraform configuration to deploy Pos
 
 ---
 
-## **Table of Contents**
+## System Requirements
 
-1. [Prerequisites](#prerequisites)
-2. [Folder Structure](#folder-structure)
-3. [Features](#features)
-4. [How to Use](#how-to-use)
-5. [Modules](#modules)
-6. [Configuration Variables](#configuration-variables)
-7. [Outputs](#outputs)
-8. [Security Considerations](#security-considerations)
-9. [Troubleshooting](#troubleshooting)
+Ensure your system meets the following requirements:
+
+- **Operating System**: Linux (Debian/Ubuntu preferred)
+- **RAM**: 8GB or more
+- **Disk Space**: At least 20GB of free disk space
+- **CPU**: 4 cores minimum
+- **Internet**: Active internet connection for downloading dependencies and charts
+
 
 ---
 
@@ -37,18 +36,13 @@ The project is organized as follows:
 terraform-project/
 ├── main.tf                 # Main Terraform configuration
 ├── variables.tf            # Global variables for the project
-├── outputs.tf              # Global outputs
-├── providers.tf            # Provider configurations
-├── terraform.tfvars        # Environment-specific variable values
 ├── modules/                # Modules directory
 │   ├── postgresql/         # PostgreSQL module
 │   │   ├── main.tf         # Main PostgreSQL configuration
-│   │   ├── variables.tf    # Variables for PostgreSQL
-│   │   ├── outputs.tf      # Outputs for PostgreSQL
+│   │   ├── variables.tf    # Variables for PostgreSQL   
 │   ├── sonarqube/          # SonarQube module
 │       ├── main.tf         # Main SonarQube configuration
 │       ├── variables.tf    # Variables for SonarQube
-│       ├── outputs.tf      # Outputs for SonarQube
 └── README.md               # Documentation
 ```
 
