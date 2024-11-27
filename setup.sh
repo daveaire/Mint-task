@@ -8,7 +8,7 @@ set -e  # Exit on error
 configure_minikube() {
   echo "Configuring Minikube with Docker driver..."
   minikube config set cpus 4
-  minikube config set memory 8000
+  minikube config set memory 7949
   minikube config set driver docker
 
   echo "Starting Minikube..."
