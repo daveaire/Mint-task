@@ -31,8 +31,12 @@ install_dependencies() {
   sudo systemctl start docker
   sudo systemctl enable docker
 
+  echo "Configuring Docker permissions..."
+  sudo usermod -aG docker $USER
+  echo "Docker permissions configured. You may need to log out and log back in or run 'newgrp docker' for the changes to take effect."
+
   echo "Docker installed successfully."
-  
+
   echo "Installing Minikube..."
   curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
   sudo install minikube-linux-amd64 /usr/local/bin/minikube
@@ -109,6 +113,11 @@ echo "Starting the automation script..."
 install_dependencies
 configure_minikube
 add_helm_repo
+
+echo "Please log out and log back in or run 'newgrp docker' before continuing if Docker permissions have been updated."
+echo "If ready, press any key to continue..."
+read -n 1 -s
+
 deploy_terraform
 verify_deployment
 
