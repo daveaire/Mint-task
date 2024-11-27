@@ -1,8 +1,7 @@
 resource "helm_release" "sonarqube" {
   name       = "sonarqube"
   namespace  = var.namespace
-  repository = "oteemocharts/sonarqube"
-  chart      = "sonarqube"
+  chart      = "oteemocharts/sonarqube"
 
   set {
     name  = "postgresql.enabled"
