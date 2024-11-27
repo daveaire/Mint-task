@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Script to automate the installation of dependencies and deployment using Terraform and Minikube with VirtualBox driver
-
 set -e  # Exit on error
 
 # Function to install dependencies
@@ -11,11 +9,12 @@ install_dependencies() {
   sudo apt-get upgrade -y
   sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
-  echo "Installing VirtualBox..."
-  wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg --dearmor
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
-  sudo apt-get update
-  sudo apt-get install -y virtualbox-7.0
+  echo "Installing KVM and dependencies..."
+  sudo apt-get install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+  sudo apt-get install -y virt-manager
+
+  echo "Adding user to the 'libvirt' group..."
+  sudo usermod -aG libvirt $USER
 
   echo "Installing Minikube..."
   curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
@@ -41,12 +40,12 @@ install_dependencies() {
   sudo apt-get install -y terraform
 }
 
-# Function to configure and start Minikube with VirtualBox driver
+# Function to configure and start Minikube with KVM2 driver
 configure_minikube() {
-  echo "Configuring Minikube with VirtualBox driver..."
+  echo "Configuring Minikube with KVM2 driver..."
   minikube config set cpus 2
   minikube config set memory 4096
-  minikube config set driver virtualbox
+  minikube config set driver kvm2
 
   echo "Starting Minikube..."
   minikube start
