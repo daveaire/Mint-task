@@ -45,12 +45,6 @@ Before running the script, ensure the following dependencies are installed:
 5. **Terraform**:
    - [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 
-6. **Run `environment.sh` (if environment is not set up)**:
-   If your environment does not have the above dependencies installed, run the `environment.sh` script:
-   ```bash
-   chmod +x environment.sh
-   sudo ./environment.sh
-   ```
 
 ---
 
@@ -169,7 +163,3 @@ Automation script completed successfully!
      ```
 
 ---
-
-## License
-
-This script is provided as-is, without warranty. Use it at your own risk.
