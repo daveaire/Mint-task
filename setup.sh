@@ -33,8 +33,10 @@ install_dependencies() {
 
   echo "Configuring Docker permissions..."
   sudo usermod -aG docker $USER
-  echo "Docker permissions configured. You may need to log out and log back in or run 'newgrp docker' for the changes to take effect."
-
+  # Apply group change immediately in the current shell
+  exec sg docker newgrp `id -gn` <<EOC
+echo "Docker permissions configured. Continuing the script..."
+EOC
   echo "Docker installed successfully."
 
   echo "Installing Minikube..."
@@ -113,11 +115,6 @@ echo "Starting the automation script..."
 install_dependencies
 configure_minikube
 add_helm_repo
-
-echo "Please log out and log back in or run 'newgrp docker' before continuing if Docker permissions have been updated."
-echo "If ready, press any key to continue..."
-read -n 1 -s
-
 deploy_terraform
 verify_deployment
 
