@@ -4,6 +4,19 @@
 
 set -e  # Exit on error
 
+# Function to check and apply Docker permissions
+check_docker_permissions() {
+  if ! groups $USER | grep -q '\bdocker\b'; then
+    echo "Adding user to the 'docker' group..."
+    sudo usermod -aG docker $USER
+    echo "Docker permissions configured. Restarting the script to apply changes..."
+    exec sg docker "$0"
+    exit 0
+  else
+    echo "User is already part of the 'docker' group."
+  fi
+}
+
 # Function to install dependencies
 install_dependencies() {
   echo "Updating system and installing prerequisites..."
@@ -31,11 +44,30 @@ install_dependencies() {
   sudo systemctl start docker
   sudo systemctl enable docker
 
-  echo "Configuring Docker permissions..."
-  sudo usermod -aG docker $USER
-  echo "Docker permissions configured. You must log out and log back in or run 'newgrp docker' to apply changes."
-  echo "Exiting script. Please re-run the script after logging back in."
-  exit 1
+  echo "Docker installed successfully."
+
+  echo "Installing Minikube..."
+  curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+  sudo install minikube-linux-amd64 /usr/local/bin/minikube
+  rm minikube-linux-amd64
+
+  echo "Installing kubectl..."
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  sudo install kubectl /usr/local/bin/kubectl
+  rm kubectl
+
+  echo "Installing Helm 3..."
+  curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+  sudo apt-get install apt-transport-https --yes
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+  sudo apt-get update
+  sudo apt-get install -y helm
+
+  echo "Installing Terraform..."
+  curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+  sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+  sudo apt-get update -y
+  sudo apt-get install -y terraform
 }
 
 # Function to configure and start Minikube
@@ -87,16 +119,11 @@ verify_deployment() {
 
 # Main script execution
 echo "Starting the automation script..."
-
-if ! groups $USER | grep -q '\bdocker\b'; then
-  echo "User is not part of the 'docker' group. Installing dependencies..."
-  install_dependencies
-else
-  echo "User already has Docker permissions. Continuing..."
-  configure_minikube
-  add_helm_repo
-  deploy_terraform
-  verify_deployment
-fi
+check_docker_permissions
+install_dependencies
+configure_minikube
+add_helm_repo
+deploy_terraform
+verify_deployment
 
 echo "Automation script completed successfully!"
