@@ -33,34 +33,9 @@ install_dependencies() {
 
   echo "Configuring Docker permissions..."
   sudo usermod -aG docker $USER
-  # Apply group change immediately in the current shell
-  exec sg docker newgrp `id -gn` <<EOC
-echo "Docker permissions configured. Continuing the script..."
-EOC
-  echo "Docker installed successfully."
-
-  echo "Installing Minikube..."
-  curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-  sudo install minikube-linux-amd64 /usr/local/bin/minikube
-  rm minikube-linux-amd64
-
-  echo "Installing kubectl..."
-  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-  sudo install kubectl /usr/local/bin/kubectl
-  rm kubectl
-
-  echo "Installing Helm 3..."
-  curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
-  sudo apt-get install apt-transport-https --yes
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
-  sudo apt-get update
-  sudo apt-get install -y helm
-
-  echo "Installing Terraform..."
-  curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-  sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-  sudo apt-get update -y
-  sudo apt-get install -y terraform
+  echo "Docker permissions configured. You must log out and log back in or run 'newgrp docker' to apply changes."
+  echo "Exiting script. Please re-run the script after logging back in."
+  exit 1
 }
 
 # Function to configure and start Minikube
@@ -112,10 +87,16 @@ verify_deployment() {
 
 # Main script execution
 echo "Starting the automation script..."
-install_dependencies
-configure_minikube
-add_helm_repo
-deploy_terraform
-verify_deployment
+
+if ! groups $USER | grep -q '\bdocker\b'; then
+  echo "User is not part of the 'docker' group. Installing dependencies..."
+  install_dependencies
+else
+  echo "User already has Docker permissions. Continuing..."
+  configure_minikube
+  add_helm_repo
+  deploy_terraform
+  verify_deployment
+fi
 
 echo "Automation script completed successfully!"
