@@ -1,21 +1,8 @@
 #!/bin/bash
 
-# Script to automate the installation of dependencies and deployment using Terraform and Minikube
+# Script to automate the installation of dependencies and deployment using Terraform and Minikube with VirtualBox driver
 
 set -e  # Exit on error
-
-# Function to check and apply Docker permissions
-check_docker_permissions() {
-  if ! groups $USER | grep -q '\bdocker\b'; then
-    echo "Adding user to the 'docker' group..."
-    sudo usermod -aG docker $USER
-    echo "Docker permissions configured. Restarting the script to apply changes..."
-    exec sg docker "$0"
-    exit 0
-  else
-    echo "User is already part of the 'docker' group."
-  fi
-}
 
 # Function to install dependencies
 install_dependencies() {
@@ -24,27 +11,11 @@ install_dependencies() {
   sudo apt-get upgrade -y
   sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
-  echo "Installing Docker..."
-  # Add Docker's official GPG key
-  sudo install -m 0755 -d /etc/apt/keyrings
-  sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-  sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-  # Add Docker repository
-  echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-  # Update package index and install Docker
-  sudo apt-get update -y
-  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-  # Start Docker service
-  sudo systemctl start docker
-  sudo systemctl enable docker
-
-  echo "Docker installed successfully."
+  echo "Installing VirtualBox..."
+  wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg --dearmor
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+  sudo apt-get update
+  sudo apt-get install -y virtualbox-7.0
 
   echo "Installing Minikube..."
   curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
@@ -70,12 +41,12 @@ install_dependencies() {
   sudo apt-get install -y terraform
 }
 
-# Function to configure and start Minikube
+# Function to configure and start Minikube with VirtualBox driver
 configure_minikube() {
-  echo "Configuring Minikube..."
+  echo "Configuring Minikube with VirtualBox driver..."
   minikube config set cpus 2
   minikube config set memory 4096
-  minikube config set driver docker
+  minikube config set driver virtualbox
 
   echo "Starting Minikube..."
   minikube start
@@ -119,7 +90,6 @@ verify_deployment() {
 
 # Main script execution
 echo "Starting the automation script..."
-check_docker_permissions
 install_dependencies
 configure_minikube
 add_helm_repo
